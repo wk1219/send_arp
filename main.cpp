@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
     uint32_t tip;   // target ip
     uint32_t sender_ip; // sender ip
 
-    sip=inet_addr("192.168.43.83");
+    sip=inet_addr("10.1.1.175");
     sender_ip=inet_addr(argv[2]);
     tip=inet_addr(argv[3]);
 
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
     memcpy(&arp.SenderIp,&sip,4);
     memset(&arp.TargetMac, 0x00, 6);    // Finding Mac set
 
-    memcpy(&arp.TargetIp,&tip,4);
+    memcpy(&arp.TargetIp,&sender_ip,4);
 
     memcpy(packet+length, &arp, sizeof(arp));
     length+=sizeof(eth);
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
  if(ntohs(eth.etype) == arpType && arp.Opcode == OPCODE_REPLY){
 // --------------------------- REPLY --------------------------- //
 
-    while(1){
+    //while(1){
         int length = 0;
 
         memset(packet, 0, sizeof(packet));
@@ -141,6 +141,7 @@ int main(int argc, char *argv[])
         memcpy(arp.SenderMac, &eth.Smac, 6);
         memcpy(&arp.SenderIp,&tip,4);
         memcpy(arp.TargetMac, &eth.Dmac, 6);
+        printf("%.2x:%.2x:%.2x:%.2x:%.2x:%.2x", arp.TargetMac[0],arp.TargetMac[1],arp.TargetMac[2],arp.TargetMac[3], arp.TargetMac[4],arp.TargetMac[5]);
         memcpy(&arp.TargetIp, &sender_ip, 4);
 
 
@@ -148,6 +149,6 @@ int main(int argc, char *argv[])
         length+=sizeof(eth);
 
         pcap_sendpacket(handle, packet, 42);    // ARP Reply packet send
-        }
+        //}
     }
 }
