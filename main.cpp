@@ -141,7 +141,6 @@ int main(int argc, char *argv[])
         memcpy(arp.SenderMac, &eth.Smac, 6);
         memcpy(&arp.SenderIp,&tip,4);
         memcpy(arp.TargetMac, &eth.Dmac, 6);
-        printf("%.2x:%.2x:%.2x:%.2x:%.2x:%.2x", arp.TargetMac[0],arp.TargetMac[1],arp.TargetMac[2],arp.TargetMac[3], arp.TargetMac[4],arp.TargetMac[5]);
         memcpy(&arp.TargetIp, &sender_ip, 4);
 
 
